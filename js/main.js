@@ -1,0 +1,1 @@
+(function(){puddi(function(){var t,e,n;return this.stage=new createjs.Stage("game"),t=e=new createjs.Shape,t.graphics.beginFill("DeepSkyBlue").drawCircle(0,0,50),t.x=100,t.y=100,n=this.stage,n.addChild(e),n.update(),n})}).call(this);
