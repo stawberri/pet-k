@@ -1,2 +1,2 @@
-nyaa = {}
-[..call nyaa for @puddi.mew]
+nyaa = _: require \prelude-ls
+[..call nyaa, nyaa for @puddi.mew]

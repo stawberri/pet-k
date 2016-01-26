@@ -1,7 +1,6 @@
 <- puddi
 
 @stage = new createjs.Stage \game
-@barn = new Barn local-storage
 
 createjs.Ticker
   ..timing-mode = ..RAF_SYNCHED
