@@ -11,9 +11,45 @@ k = new createjs.Sprite-sheet do
   animations:
     idle: 0
     alert: 1
-    exclaim: 2
+    exclaim:
+      frames: [2 1 2 1]
+      next: \exclaimAfter
+    exclaim-after: 2
 |> new createjs.Sprite _
   ..x = 69
   ..y = 49
 
-@stage.add-child k
+petting-k = false
+var last-local
+$ window
+  ..on 'mousedown touchstart' ->
+    petting-k := true
+  ..on 'mouseup touchend' ->
+    petting-k := false
+    last-local := void
+
+pet-cooldown = 0
+@stage
+  ..add-child k
+  ..add-event-listener \stagemousemove ~>
+    now = $.now!
+    if petting-k and now > pet-cooldown and now > @$overload-time
+      pet-cooldown := $.now! + 50
+      local = k.global-to-local it.stage-x, it.stage-y
+      local.hit = k.hit-test local.x, local.y
+      if last-local?hit or local.hit
+        # If this isn't true, player just clicked, and there would be no point anyways
+        if last-local?
+          distance = ((local.x - last-local.x) ^ 2 + (local.y - last-local.y) ^ 2) ^ 0.5
+          distance = Math.ceil distance
+
+          @$xp += distance
+      last-local := local
+
+current-animation = \idle
+@tick ~>
+  switch current-animation
+  | \idle
+    k.goto-and-play current-animation := \exclaim if @$xp-passing
+  | \exclaim
+    k.goto-and-stop current-animation := \idle if !@$xp-passing

@@ -59,6 +59,28 @@ h1
 
   background: #fff url(../img/ui/loading.gif) center center no-repeat
 
+#xp
+  position: absolute
+  bottom: 50px
+  right: 100px
+
+  color: #fff
+  font-size: 3rem
+
+  &::after
+    content: 'xp'
+
+  &.good
+    color: #efe
+    text-shadow: 0 0 15px #9f9
+
+  &.bad
+    color: #f99
+    text-shadow: 0 0 15px #500
+
+    &::after
+      content: 's'
+
 #attribution
   margin: 0
     top: 10px

@@ -1,2 +1,2 @@
 nyaa = _:@
-[..call nyaa,nyaa for @puddi.mew]
+[..call nyaa, nyaa for @puddi.mew]
