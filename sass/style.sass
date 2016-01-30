@@ -13,7 +13,8 @@ html
   min-height: $body-height + $padding * 2
   box-sizing: border-box
 
-  background: #444
+  background: #444 url('https://qt.aideen.pw/dots.svg') center calc(100% - 16px) no-repeat
+  background-size: 69px
   padding: $padding
 
   color: #000
@@ -59,16 +60,38 @@ h1
 
   background: #fff url(../img/ui/loading.gif) center center no-repeat
 
-#xp
+#lvmp
   position: absolute
-  bottom: 50px
-  right: 100px
+  bottom: 110px
+  right: 50px
+
+  color: #fff
+  font-size: 3rem
+
+  &::before
+    content: 'level / rank '
+
+#hp
+  position: absolute
+  bottom: 60px
+  right: 50px
 
   color: #fff
   font-size: 3rem
 
   &::after
-    content: 'xp'
+    content: ' happiness'
+
+#xp
+  position: absolute
+  bottom: 10px
+  right: 50px
+
+  color: #fff
+  font-size: 3rem
+
+  &::after
+    content: ' petting power'
 
   &.good
     color: #efe
@@ -79,7 +102,7 @@ h1
     text-shadow: 0 0 15px #500
 
     &::after
-      content: 's'
+      content: 's cooldown'
 
 #attribution
   margin: 0

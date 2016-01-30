@@ -4,6 +4,8 @@ level-data =
   * xp-min: 500
     xp-pass: 1000
     xp-max: 3000
+    hp-goal: 3000
+    overload-wait: 1000
   ...
 
 level-data-processed = for level, index in level-data
