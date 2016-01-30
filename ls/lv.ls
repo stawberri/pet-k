@@ -6,13 +6,17 @@ level-data =
     xp-max: 3000
     hp-goal: 3000
     overload-wait: 1000
+    cooldown: 1000
   ...
 
+var last-level
 level-data-processed = for level, index in level-data
-  if index is 0
+  last-level = if index is 0
     level
   else
-    level-data-processed[index - 1] with level
+    last-level with level
 
 @lv = (level = @$lv) ->
   level-data-processed[level]
+
+@$lv = level-data-processed.length - 1 unless @lv!?

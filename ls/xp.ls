@@ -25,19 +25,21 @@ get-xp-state = (xp = @$xp, level-data = @lv!) ~>
 
   @$xp-time = it.time-stamp
 
-  if it.time-stamp > @$overload-time
-    $ \#xp
-      ..remove-class \bad
-      ..text @$xp
-    if @$xp-passing
-      $ \#xp .add-class \good
+  if it.time-stamp > @$recover-time
+    $ \#xp .remove-class \yay
+    if it.time-stamp > @$overload-time
+      $ \#xp
+        ..remove-class \bad
+        ..text @$xp
+      if @$xp-passing
+        $ \#xp .add-class \good
+      else
+        $ \#xp .remove-class \good
     else
-      $ \#xp .remove-class \good
-  else
-    $ \#xp
-      ..add-class \bad
-      ..remove-class \good
-      ..text <| @$overload-time - it.time-stamp |> (/ 1000) |> (.to-fixed 1)
+      $ \#xp
+        ..add-class \bad
+        ..remove-class \good
+        ..text <| @$overload-time - it.time-stamp |> (/ 1000) |> (.to-fixed 1)
 
   level-data = @lv!
 
@@ -57,7 +59,7 @@ get-xp-state = (xp = @$xp, level-data = @lv!) ~>
     if it.time-stamp > @$overload-time
       @_play-sound \xp-overload
       @$xp-passing = false
-      @$overload-time = it.time-stamp + level-data.overload-wait
+      @$overload-time = it.time-stamp + (level-data.overload-wait * (1 + (@$mp / 69)))
       @$xp = 0
       @$hp = 0
 
@@ -68,16 +70,26 @@ get-xp-state = (xp = @$xp, level-data = @lv!) ~>
     @$hp -= Math.ceil ((level-data.xp-pass - @$xp) * delta) / (level-data.xp-max - level-data.xp-min)
     @$hp >?= 0
 
-  $ \#hp .text "#{@$hp}/#{@lv!hp-goal}"
+  $ \#hp .text "#{@$hp}/#{Math.ceil @lv!hp-goal * (1 + (@$mp / 69))}"
 
   # Update lv / mp
-  if @$hp >= level-data.hp-goal
-    @_play-sound \mp-up
+  if @$hp >= Math.ceil level-data.hp-goal * (1 + (@$mp / 69))
     @$xp-passing = false
     @$xp = 0
     @$hp = 0
-    @$mp++
-    @$overload-time = it.time-stamp + 5000
+    @$overload-time = 0
+
+    if @lv @$lv + 1 |> (?)
+      @_play-sound \lv-up
+      @$mp = 0
+      @$lv++
+      $ \#xp .add-class \yay .text \Level
+    else
+      @_play-sound \mp-up
+      @$mp++
+      $ \#xp .add-class \yay .text \Rank
+
+    @$recover-time = it.time-stamp + (@lv!cooldown * (1 + (@$mp / 69)))
 
   $ \#mp .text @$mp
   $ \#lv .text @$lv

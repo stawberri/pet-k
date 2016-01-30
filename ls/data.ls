@@ -3,7 +3,7 @@
 @$ = new Barn local-storage
 
 # Numbers
-for let name in <[xp lv hp xpTime overloadTime lv mp]>
+for let name in <[xp lv hp xpTime overloadTime lv mp recoverTime]>
   @ <<< "$#{name}":~
     ~>
       @$.get name

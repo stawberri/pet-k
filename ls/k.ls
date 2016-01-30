@@ -33,7 +33,7 @@ pet-cooldown = 0
   ..add-child k
   ..add-event-listener \stagemousemove ~>
     now = $.now!
-    if petting-k and now > pet-cooldown and now > @$overload-time
+    if petting-k and now > pet-cooldown and now > @$overload-time and now > @$recover-time
       pet-cooldown := $.now! + 50
       local = k.global-to-local it.stage-x, it.stage-y
       local.hit = k.hit-test local.x, local.y
@@ -48,8 +48,13 @@ pet-cooldown = 0
 
 current-animation = \idle
 @tick ~>
+  now = it.time-stamp
   switch current-animation
   | \idle
     k.goto-and-play current-animation := \exclaim if @$xp-passing
+    k.goto-and-stop current-animation := \alert unless now > @$recover-time
   | \exclaim
     k.goto-and-stop current-animation := \idle if !@$xp-passing
+    k.goto-and-stop current-animation := \alert unless now > @$recover-time
+  | \alert
+    k.goto-and-stop current-animation := \idle if now > @$recover-time
