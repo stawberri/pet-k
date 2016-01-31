@@ -14,6 +14,8 @@
 #//@prepros-append xp.ls
 #@prepros-append orb.ls
 #//@prepros-append orb.ls
+#@prepros-append tutorial.ls
+#//@prepros-append tutorial.ls
 
 #@prepros-append ~.ls
 #//@prepros-append ~.ls
