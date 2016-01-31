@@ -13,6 +13,8 @@ get-xp-state = (xp = @$xp, level-data = @lv!) ~>
   | xp < level-data.xp-max  =>  1
   | _                       =>  2
 
+@hp-goal = ~> Math.ceil (1 + (@$mp / 69)) * @lv!hp-goal
+
 @tick ~>
   # Calculate xp changes
   delta = it.time-stamp - @$xp-time
@@ -24,22 +26,6 @@ get-xp-state = (xp = @$xp, level-data = @lv!) ~>
   @$xp >?= 0
 
   @$xp-time = it.time-stamp
-
-  if it.time-stamp > @$recover-time
-    $ \#xp .remove-class \yay
-    if it.time-stamp > @$overload-time
-      $ \#xp
-        ..remove-class \bad
-        ..text @$xp
-      if @$xp-passing
-        $ \#xp .add-class \good
-      else
-        $ \#xp .remove-class \good
-    else
-      $ \#xp
-        ..add-class \bad
-        ..remove-class \good
-        ..text <| @$overload-time - it.time-stamp |> (/ 1000) |> (.to-fixed 1)
 
   level-data = @lv!
 
@@ -70,10 +56,8 @@ get-xp-state = (xp = @$xp, level-data = @lv!) ~>
     @$hp -= Math.ceil ((level-data.xp-pass - @$xp) * delta) / (level-data.xp-max - level-data.xp-min)
     @$hp >?= 0
 
-  $ \#hp .text "#{@$hp}/#{Math.ceil @lv!hp-goal * (1 + (@$mp / 69))}"
-
   # Update lv / mp
-  if @$hp >= Math.ceil level-data.hp-goal * (1 + (@$mp / 69))
+  if @$hp >= @hp-goal!
     @$xp-passing = false
     @$xp = 0
     @$hp = 0
@@ -83,13 +67,8 @@ get-xp-state = (xp = @$xp, level-data = @lv!) ~>
       @_play-sound \lv-up
       @$mp = 0
       @$lv++
-      $ \#xp .add-class \yay .text \Level
     else
       @_play-sound \mp-up
       @$mp++
-      $ \#xp .add-class \yay .text \Rank
 
     @$recover-time = it.time-stamp + (@lv!cooldown * (1 + (@$mp / 69)))
-
-  $ \#mp .text @$mp
-  $ \#lv .text @$lv
