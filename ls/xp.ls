@@ -1,10 +1,10 @@
 <- puddi
 
-@_register-sound \xp-fail.wav volume: 0.3
-@_register-sound \xp-pass.wav volume: 0.5
-@_register-sound \xp-overload.wav
-@_register-sound \mp-up.wav volume: 0.5
-@_register-sound \lv-up.wav volume: 0.5
+@_register-sound \xp-fail.mp3 volume: 0.3
+@_register-sound \xp-pass.mp3 volume: 0.5
+@_register-sound \xp-overload.mp3
+@_register-sound \mp-up.mp3 volume: 0.5
+@_register-sound \lv-up.mp3 volume: 0.5
 
 get-xp-state = (xp = @$xp, level-data = @lv!) ~>
   switch
