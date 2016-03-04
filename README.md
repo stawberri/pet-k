@@ -1,1 +1,1 @@
-[Pet K](https://pk.aideen.pw)
+[Play Pet K](https://pk.aideen.pw)
